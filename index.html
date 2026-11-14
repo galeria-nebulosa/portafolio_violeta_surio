@@ -436,7 +436,7 @@
 
     /* SECCIONES DE CONTENIDO DINÁMICO */
     .portfolio-content-area {
-      padding-top: 75px;
+      padding-top: 90px; /* Bajado el encabezado */
     }
 
     .category-section {
@@ -575,6 +575,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.3s ease;
     }
 
     .uniform-img-box.square-box {
@@ -619,6 +620,25 @@
       border-top: 1px solid rgba(168, 85, 247, 0.18);
     }
 
+    /* Tarjetas Grandes e Interactivas para UI/UX */
+    .ux-large-card {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .ux-large-card .uniform-img-box {
+      background: transparent !important;
+      border: none !important;
+    }
+    .ux-large-card .media-caption {
+      border-top: none !important;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    .ux-large-card:hover .uniform-img-box img {
+      transform: scale(1.08) translateY(-5px);
+    }
+
     /* VISORES INTERACTIVOS DE LIBROS (PDF & EXCEL XLSX) */
     .book-viewer-container {
       background: #0b0719;
@@ -627,6 +647,7 @@
       overflow: hidden;
       margin: 22px 0;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
     }
 
     .book-viewer-container:fullscreen {
@@ -710,6 +731,32 @@
       perspective: 1400px;
     }
 
+    /* Flechas gigantes para los PDF */
+    .pdf-nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      color: #fff;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .pdf-nav-arrow:hover {
+      transform: translateY(-50%) scale(1.15);
+    }
+    .pdf-nav-arrow.left { left: 15px; }
+    .pdf-nav-arrow.right { right: 15px; }
+
     .book-viewer-container:fullscreen .pdf-book-stage {
       max-height: calc(100vh - 90px);
       height: 100%;
@@ -738,6 +785,7 @@
       display: block;
       max-width: 100%;
       height: auto;
+      margin: 0 auto;
     }
 
     /* Stage del Libro Excel (.xlsx) */
@@ -770,10 +818,10 @@
     }
 
     .xlsx-sheet-stage {
-      max-height: 460px;
+      max-height: 500px;
       overflow: auto;
-      padding: 16px;
-      background: #0d081d;
+      padding: 0; /* Subido */
+      background: #fff; /* Fondo blanco para respetar línea gráfica del doc */
     }
 
     .book-viewer-container:fullscreen .xlsx-sheet-stage {
@@ -785,21 +833,22 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.78rem;
-      color: #e2e8f0;
-      background: rgba(20, 13, 42, 0.9);
+      color: #333; /* Texto oscuro para fondo blanco */
+      background: #fff;
+      margin: 0;
     }
 
     .xlsx-sheet-stage td, .xlsx-sheet-stage th {
-      border: 1px solid rgba(168, 85, 247, 0.25);
-      padding: 8px 10px;
+      border: 1px solid #ddd;
+      padding: 4px 8px; /* Márgenes ajustados para que se vea más arriba */
       text-align: left;
       min-width: 110px;
     }
 
     .xlsx-sheet-stage tr:first-child td, .xlsx-sheet-stage th {
-      background: rgba(147, 51, 234, 0.35);
+      background: #f3e8ff; /* Un tono morado suave para cabeceras */
       font-weight: 700;
-      color: #fff;
+      color: #4c1d95;
     }
 
     /* Embeds de Video (YouTube, Shorts, TikTok, Instagram) */
@@ -896,7 +945,7 @@
       position: fixed;
       inset: 0;
       z-index: 2000;
-      background: rgba(4, 2, 12, 0.94);
+      background: rgba(7, 5, 16, 0.94);
       backdrop-filter: blur(10px);
       display: none;
       align-items: center;
@@ -908,6 +957,10 @@
     .lightbox-modal.open {
       display: flex;
       animation: fadeIn 0.25s ease;
+    }
+    
+    .lightbox-modal.transparent-bg {
+      background: rgba(7, 5, 16, 0.94); /* Mismo fondo de la web */
     }
 
     .lightbox-modal img {
@@ -995,6 +1048,7 @@
       .selector-header {
         justify-content: center;
       }
+      .pdf-nav-arrow { width: 40px; height: 40px; font-size: 1.2rem; }
     }
   </style>
 </head>
@@ -1006,7 +1060,7 @@
   <!-- Barra de Navegación Flotante (Aparece al elegir una sección) -->
   <nav id="stickyNav" class="sticky-nav">
     <div class="nav-brand" onclick="goHome()">
-      <i class="fa-solid fa-sparkles"></i> Violeta Cortez Surio
+      <i class="fa-solid fa-sparkles"></i> Licda. Violeta Michelle Cortez Surio
     </div>
     <div class="nav-pills">
       <button class="nav-pill-btn" onclick="goHome()"><i class="fa-solid fa-house"></i> Inicio / Bio</button>
@@ -1228,9 +1282,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-tss-exec', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-tss-exec-wrap">
                 <canvas id="pdf-tss-exec-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-tss-exec', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -1246,9 +1302,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-tss-copys', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-tss-copys-wrap">
                 <canvas id="pdf-tss-copys-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-tss-copys', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
         </div>
@@ -1285,9 +1343,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-chero-lives', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-chero-lives-wrap">
                 <canvas id="pdf-chero-lives-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-chero-lives', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -1342,17 +1402,22 @@
             <div class="xlsx-sheet-stage" id="xlsx-mom-stage">Cargando hojas de cálculo interactivas...</div>
           </div>
 
+          <!-- Título Reseñas / Copys -->
+          <h4 style="color: #e9d5ff; font-size: 1.1rem; margin: 30px 0 15px 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-pen-fancy" style="color: #f472b6;"></i> Propuestas de Copywriting Estratégico
+          </h4>
+
           <div class="uniform-grid wide-cards">
-            <div class="media-card">
-              <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
-                <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/eb4bc93b81cdc8232962b8ac503eef2e124384d2/copy%201.png" alt="Copy 1 Mom Made Bakery">
+            <div class="media-card" style="height: 100%; display: flex; flex-direction: column;">
+              <div class="uniform-img-box contain-mode" onclick="openLightbox(this)" style="flex: 1; min-height: 250px;">
+                <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/eb4bc93b81cdc8232962b8ac503eef2e124384d2/copy%201.png" alt="Copy 1 Mom Made Bakery" style="height: 100%; object-fit: cover;">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
               </div>
               <div class="media-caption">Redacción estratégica y propuesta de post #1 — Mom Made Bakery.</div>
             </div>
-            <div class="media-card">
-              <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
-                <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/eb4bc93b81cdc8232962b8ac503eef2e124384d2/copy%202%20mom%20made.png" alt="Copy 2 Mom Made Bakery">
+            <div class="media-card" style="height: 100%; display: flex; flex-direction: column;">
+              <div class="uniform-img-box contain-mode" onclick="openLightbox(this)" style="flex: 1; min-height: 250px;">
+                <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/eb4bc93b81cdc8232962b8ac503eef2e124384d2/copy%202%20mom%20made.png" alt="Copy 2 Mom Made Bakery" style="height: 100%; object-fit: cover;">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
               </div>
               <div class="media-caption">Redacción estratégica y propuesta de post #2 — Mom Made Bakery.</div>
@@ -1377,8 +1442,8 @@
                 <button class="book-btn fullscreen-btn" onclick="toggleBookFullscreen('gsheet-gn')"><i class="fa-solid fa-expand"></i> Pantalla Completa</button>
               </div>
             </div>
-            <div class="pdf-book-stage" style="padding:0;">
-              <iframe src="https://docs.google.com/spreadsheets/d/1PgRHk7wKfB9L29RXpkZR_-i0jaTMcAZA0-SvYxEVsVg/preview" style="width:100%; height:480px; border:none;"></iframe>
+            <div class="pdf-book-stage" style="padding:0; background: #fff;">
+              <iframe src="https://docs.google.com/spreadsheets/d/1PgRHk7wKfB9L29RXpkZR_-i0jaTMcAZA0-SvYxEVsVg/preview" style="width:100%; height:520px; border:none;"></iframe>
             </div>
           </div>
 
@@ -1439,9 +1504,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-saytec-est', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-saytec-est-wrap">
                 <canvas id="pdf-saytec-est-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-saytec-est', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -1456,9 +1523,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-testing-sv', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-testing-sv-wrap">
                 <canvas id="pdf-testing-sv-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-testing-sv', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
         </div>
@@ -1484,9 +1553,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-yt-ads', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-yt-ads-wrap">
                 <canvas id="pdf-yt-ads-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-yt-ads', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -1502,11 +1573,18 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-etsy', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-etsy-wrap">
                 <canvas id="pdf-etsy-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-etsy', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
+
+          <!-- Título Reseñas -->
+          <h4 style="color: #e9d5ff; font-size: 1.1rem; margin: 30px 0 15px 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-star" style="color: #fbbf24;"></i> Reseñas de Clientes (Etsy)
+          </h4>
 
           <div class="uniform-grid">
             <div class="media-card">
@@ -1560,7 +1638,16 @@
         <div class="brand-block">
           <div class="brand-header">
             <span class="brand-tag">Ecosistema Tecnológico • Galería Nebulosa</span>
-            <h3>Plataforma Web, Membresías, Certificados con Apps Script & Evaluación a Ciegas</h3>
+            <h3 style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
+              Plataforma Web, Membresías, Certificados con Apps Script & Evaluación a Ciegas
+              <span style="display: flex; gap: 8px; font-size: 1.3rem; color: #e879f9;">
+                <i class="devicon-wordpress-plain" title="WordPress"></i>
+                <i class="devicon-html5-plain" title="HTML5"></i>
+                <i class="devicon-css3-plain" title="CSS3"></i>
+                <i class="devicon-javascript-plain" title="JavaScript"></i>
+                <i class="fa-solid fa-envelope-open-text" title="Contact Form 7" style="color:#fff;"></i>
+              </span>
+            </h3>
             <p>Diseño y desarrollo integral del ecosistema digital de Galería Nebulosa, unificando interfaz premium con flujos automatizados de extremo a extremo:</p>
             <ul class="bullet-list">
               <li><strong>Estructura Web & UX/UI Responsivo:</strong> Arquitectura de plataforma, páginas de fundadora, pasarela de membresías y experiencia optimizada para escritorio y dispositivos móviles.</li>
@@ -1570,8 +1657,9 @@
             </ul>
           </div>
 
-          <div class="uniform-grid wide-cards">
-            <div class="media-card">
+          <!-- Tarjetas Grandes Interactivas -->
+          <div class="uniform-grid wide-cards" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+            <div class="media-card ux-large-card">
               <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
                 <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/fb705b34328fa953e5af4e31d5a99620324e09f7/1-Photoroom.png" alt="Web Escritorio y Móvil GN">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
@@ -1579,7 +1667,7 @@
               <div class="media-caption">Diseño UI/UX Responsivo (Escritorio y Móvil) — Ecosistema Web Galería Nebulosa.</div>
             </div>
 
-            <div class="media-card">
+            <div class="media-card ux-large-card">
               <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
                 <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/be20ab631c1c5728668f08ac9c817e54a546b416/fundadora%20y%20membres%C3%ADa%20y%20pago-Photoroom.png" alt="UX Membresía y Pago GN">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
@@ -1587,7 +1675,7 @@
               <div class="media-caption">Arquitectura UX de Conversión: Sección de Fundadora, Planes de Membresía y Flujo de Pago.</div>
             </div>
 
-            <div class="media-card">
+            <div class="media-card ux-large-card">
               <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
                 <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/f1fa7e72011be3ee19656a8af2b0a705b9300efc/certificados%20con%20app%20script-Photoroom.png" alt="Certificados con Google Apps Script">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
@@ -1595,7 +1683,7 @@
               <div class="media-caption">Motor de Certificados Automatizados con Google Apps Script y Portal de Verificación Oficial.</div>
             </div>
 
-            <div class="media-card">
+            <div class="media-card ux-large-card">
               <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
                 <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/d2331a17f7e9b5372938224a9722a3c2dfeaa4b2/sistema%20para%20jueces%202.png" alt="Sistema de Evaluación a Ciegas para Jurado">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
@@ -1603,7 +1691,7 @@
               <div class="media-caption">Plataforma Privada de Evaluación a Ciegas (WordPress + HTML/JS/CSS + Google Sheets).</div>
             </div>
 
-            <div class="media-card">
+            <div class="media-card ux-large-card">
               <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
                 <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/6c4726c8dd16e0df3a803395febc8fe6d365ac45/gn%20vip.png" alt="Credencial VIP y Firma Digital Jurado">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
@@ -1611,7 +1699,7 @@
               <div class="media-caption">Registro Legal Digital con Firma Manuscrita en Pantalla, Acta PDF Automática y Credencial VIP.</div>
             </div>
 
-            <div class="media-card">
+            <div class="media-card ux-large-card">
               <div class="uniform-img-box contain-mode" onclick="openLightbox(this)">
                 <img src="https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/fb705b34328fa953e5af4e31d5a99620324e09f7/laptop%20correo%20GN.png" alt="Automatización de Correos GN">
                 <span class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</span>
@@ -1761,9 +1849,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-saytec-dis', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-saytec-dis-wrap">
                 <canvas id="pdf-saytec-dis-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-saytec-dis', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -2497,9 +2587,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-titulo', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-titulo-wrap">
                 <canvas id="pdf-titulo-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-titulo', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -2515,9 +2607,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-comercio', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-comercio-wrap">
                 <canvas id="pdf-comercio-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-comercio', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
 
@@ -2533,9 +2627,11 @@
               </div>
             </div>
             <div class="pdf-book-stage">
+              <button class="pdf-nav-arrow left" onclick="changePdfPage('pdf-ortografia', -1)"><i class="fa-solid fa-chevron-left"></i></button>
               <div class="pdf-canvas-wrapper" id="pdf-ortografia-wrap">
                 <canvas id="pdf-ortografia-canvas"></canvas>
               </div>
+              <button class="pdf-nav-arrow right" onclick="changePdfPage('pdf-ortografia', 1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </div>
         </div>
@@ -2561,7 +2657,7 @@
   </div>
 
   <footer>
-    <p>© 2026 Violeta Michelle Cortez Surio (Creative Art Violeta) • Todos los derechos reservados.</p>
+    <p>© 2026 Licda. Violeta Michelle Cortez Surio (Creative Art Violeta) • Todos los derechos reservados.</p>
     <p style="margin-top:6px; font-size:0.78rem; color:#a855f7;">Diseño UI/UX & Arquitectura Web inspirada en Galería Nebulosa</p>
   </footer>
 
@@ -2725,7 +2821,7 @@
 
     // ==================== 4. MOTOR DE LIBROS INTERACTIVOS (PDF.JS) ====================
     const pdfConfigs = {
-      'pdf-tss-exec': 'https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/08acb57037a326276508d8cd1a0075ce87d9b7a/TSS_Resumen_Ejecutivo_Auditoria_Estrategica_Digital_Preliminary_August_2026%20(2).pdf',
+      'pdf-tss-exec': 'https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/da2d3765881ecd66ec469ff44dff3c758fff9c33/TSS_Resumen_Ejecutivo_Auditoria_Estrategica_Digital_Preliminary_August_2026%20(2).pdf',
       'pdf-tss-copys': 'https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/c1fded191d26f52a4be44e8ca6e697d93479bc98/copys%20de%20TSS.pdf',
       'pdf-chero-lives': 'https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/a849301e90534b0bf81881f95cceb2ff9bfcb076/Estrategia%20de%20contenido%20y%20lives.pdf',
       'pdf-saytec-est': 'https://raw.githubusercontent.com/galeria-nebulosa/portafolio_violeta_surio/3ea659a0c611ff73b298000dd06c81ae2bcd2676/Grupo%20saytec%20para%20estrategia.pdf',
@@ -2762,7 +2858,14 @@
 
       const page = await book.doc.getPage(book.page);
       const isFullscreen = document.fullscreenElement && document.fullscreenElement.id === id;
-      const scale = isFullscreen ? 1.65 : 1.18;
+      
+      let scale = isFullscreen ? 1.65 : 1.18;
+      
+      // Ajuste específico para el título universitario que salía cortado
+      if (id === 'pdf-titulo') {
+        scale = isFullscreen ? 1.5 : 0.95; // Reducido para que quepa completo en su contenedor
+      }
+
       const viewport = page.getViewport({ scale });
 
       const context = canvasEl.getContext('2d');
@@ -2851,9 +2954,19 @@
     function openLightbox(boxEl) {
       const img = boxEl.querySelector('img');
       const captionEl = boxEl.parentElement.querySelector('.media-caption');
+      const modal = document.getElementById('lightboxModal');
+      
       document.getElementById('lightboxImg').src = img.src;
       document.getElementById('lightboxCaption').textContent = captionEl ? captionEl.textContent : img.alt;
-      document.getElementById('lightboxModal').classList.add('open');
+      
+      // Si la imagen viene de una tarjeta UX/UI transparente, usamos el fondo morado
+      if (boxEl.closest('.ux-large-card')) {
+        modal.classList.add('transparent-bg');
+      } else {
+        modal.classList.remove('transparent-bg');
+      }
+      
+      modal.classList.add('open');
     }
 
     function closeLightbox(e) {
